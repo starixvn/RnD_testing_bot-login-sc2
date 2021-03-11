@@ -7,7 +7,7 @@ export const setting ={
     },
     timeout : 60000,
     loop : 60,
-    headless: false
+    headless: true
 
 }
 

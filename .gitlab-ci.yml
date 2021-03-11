@@ -1,16 +1,44 @@
-# This file is a template, and might need editing before it works on your project.
-docker-build-master:
-  # Official docker image.
-  image: docker:latest
-  stage: build
+image: 
+  name: git3.nexdev.net:5050/rnd/testing/bot-login-sc2:latest
+
+stages: 
+  - test
+  - after-test
+  - cleanup
+
+login-test:
+  stage: test
   tags:
-    - docker-automation-test
-  services:
-    - docker:dind
-  before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+   - docker-automation-test
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
-    - docker push "$CI_REGISTRY_IMAGE"
-  only:
-    - master
+   - npm install
+   - set NODE_ENV=cf_prod
+   - npm run test
+
+    
+after-test-f:
+  stage: after-test
+  tags:
+  - docker-automation-test
+  script:
+    - curl --data-urlencode "message=**CI Job 「Check Login SC2」..:rocket:**{{NewLine}}**:no_entry:FAILED:no_entry:**{{NewLine}}Refer [here](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/pipelines/$CI_PIPELINE_ID) for more detail{{NewLine}}________________" -d conversationId=-1001353358025 -d token=0A40aOc7CtpzjbBSJu8KNWQRoXyjRvf9  https://bot.nexdev.net/skynex/api/messages/forwardwithtoken
+  when: on_failure
+
+
+after-test-p:
+  stage: after-test
+  tags:
+  - docker-automation-test
+  script:
+    - curl --data-urlencode "message=**Done**" -d conversationId=-1001353358025 -d token=0A40aOc7CtpzjbBSJu8KNWQRoXyjRvf9  https://bot.nexdev.net/skynex/api/messages/forwardwithtoken
+  when: on_success
+cleanup_job:
+  stage: cleanup
+  tags:
+  - docker-automation-test
+  script:
+    - echo "Cleaning up"
+    - rm -rf "%CACHE_PATH%/%CI_PIPELINE_ID%"
+  when: always
+  
+  

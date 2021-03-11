@@ -1,5 +1,5 @@
 image: 
-  name: git3.nexdev.net:5050/rnd/testing/bot-login-sc2:latest
+  name: roshannguyen/pwimg
 
 stages: 
   - test

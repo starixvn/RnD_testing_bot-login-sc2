@@ -462,6 +462,7 @@ export const shouldBeEqual = async(_val,_expect,_mess="") => {
 // Login
 export const Login = async(_env,_game) => {
     let flag
+    let starttime,endtime
     if(_env != 'cf_local') {
         // Login Member Site
         await MemberSiteFunc.login(_env,_game)
@@ -470,7 +471,11 @@ export const Login = async(_env,_game) => {
         await MemberSiteFunc.login_local(_env,_game)
     }
     // Verify go to Game Lobby Successfully
+    starttime = Date.now()
     flag = await GameLobbyFunc.verifyLoginSuccessfully()
+    endtime = Date.now()
+    console.log('Duration to SSO : (' + (endtime - starttime) +'ms)')
+
     // console.log(flag)
     expect(flag.Val,"Fail on Login GameLobby").to.be.true
 }

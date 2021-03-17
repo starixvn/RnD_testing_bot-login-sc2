@@ -13,11 +13,10 @@ login-test:
    - docker-automation-test
   script:
    - npm install
-   - echo "JOBR=$CI_JOB_ID" > build.env
+   - echo "JOBR=$CI_JOB_ID" >> build.env
    - echo "$CI_JOB_ID"
    - set NODE_ENV=cf_prod
    - npm run test
-
   artifacts:
     paths:
       - Report/Pictures/

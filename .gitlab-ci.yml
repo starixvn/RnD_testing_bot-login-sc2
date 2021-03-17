@@ -16,6 +16,7 @@ login-test:
    - set NODE_ENV=cf_prod
    - npm run test
    - echo "JOBR=$CI_JOB_ID" > build.env
+   - echo "$CI_JOB_ID"
   artifacts:
     paths:
       - Report/Pictures/

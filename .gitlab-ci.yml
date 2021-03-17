@@ -3,6 +3,7 @@ image:
 
 stages: 
   - test
+  - config.after.test
   - after-test
   - cleanup
 
@@ -14,11 +15,28 @@ login-test:
    - npm install
    - set NODE_ENV=cf_prod
    - npm run test
+   - echo "JOBR=$CI_JOB_ID" > build.env
   artifacts:
     paths:
       - Report/Pictures/
+      - build.env
     when: always
     expire_in: 1 day 
+
+config-after-tests:
+  stage: config.after.test
+  tags:
+  - docker-automation-test
+  script: 
+    - exit 1
+  when: on_failure  
+  artifacts:
+    reports:
+      dotenv: 
+        - build.env
+    when: always
+    expire_in: 1 day
+
 
     
 after-test-f:
@@ -28,5 +46,15 @@ after-test-f:
   script:
     - curl --data-urlencode "message=**CI Job 「Check Login SC2」..:rocket:**{{NewLine}}**:no_entry:FAILED:no_entry:** - [Evidence](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/jobs/$CI_JOB_ID/artifacts/file/Report/Pictures/Page.png){{NewLine}}Refer [here](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/pipelines/$CI_PIPELINE_ID) for more detail{{NewLine}}________________" -d conversationId=-1001353358025 -d token=0A40aOc7CtpzjbBSJu8KNWQRoXyjRvf9  https://bot.nexdev.net/skynex/api/messages/forwardwithtoken
   when: on_failure
+
+cleanup_job:
+  stage: cleanup
+  tags:
+  - docker-automation-test
+  script:
+    - echo "Cleaning up"
+    - rm -rf "%CACHE_PATH%/%CI_PIPELINE_ID%"
+  when: always
+
   
   

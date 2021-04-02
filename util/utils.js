@@ -475,7 +475,6 @@ export const Login = async(_env,_game) => {
     flag = await GameLobbyFunc.verifyLoginSuccessfully()
     endtime = Date.now()
     console.log('Duration to SSO : (' + (endtime - starttime) +'ms)')
-    await page.screenshot({ path: `./Report/Pictures/Page.png`});
 
     // console.log(flag)
     expect(flag.Val,"Fail on Login GameLobby").to.be.true

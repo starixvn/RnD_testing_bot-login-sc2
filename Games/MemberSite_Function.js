@@ -24,7 +24,7 @@ export const login = async(_env,_game) => {
         } else {
             await utils.clickEl(MemberSiteLocator.btnLogin)
         }
-
+        await utils.waitEl(MemberSiteLocator.frmMainFrame)
         await utils.navigate(await utils.getAttribute(MemberSiteLocator.frmMainFrame,'src'))
     } catch (error) {
         // Go to Membersite Url

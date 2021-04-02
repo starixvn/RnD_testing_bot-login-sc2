@@ -5,8 +5,8 @@ export const setting ={
         width : 1280,
         height : 720
     },
-    timeout : 60000,
-    loop : 30,
+    timeout : 90000,
+    loop : 90,
     headless: true
 
 }

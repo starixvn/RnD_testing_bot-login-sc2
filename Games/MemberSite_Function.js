@@ -11,13 +11,12 @@ export const login = async(_env,_game) => {
         await utils.navigate(config[_env].url)
         await utils.waitForLoadState()
         
-        // Select Sabaclub
-        await utils.selectDrp(MemberSiteLocator.optQuickLink, MemberSiteLocator.optQuickLinkSabaClub)
 
         // Input Username and Password
         await utils.sendKeys(MemberSiteLocator.txtUsername,config[_env].username[_game])
         await utils.sendKeys(MemberSiteLocator.txtPassword,config[_env].password)
 
+        await utils.sleep(1000)
         // Enter Login button
         if(_env == 'cf_prod'){
             await utils.clickEl(MemberSiteLocator.btnLoginPro)
@@ -30,14 +29,12 @@ export const login = async(_env,_game) => {
         // Go to Membersite Url
         await utils.navigate(config[_env].url)
         await utils.waitForLoadState()
-        
-        // Select Sabaclub
-        await utils.selectDrp(MemberSiteLocator.optQuickLink, MemberSiteLocator.optQuickLinkSabaClub)
 
         // Input Username and Password
         await utils.sendKeys(MemberSiteLocator.txtUsername,config[_env].username[_game])
         await utils.sendKeys(MemberSiteLocator.txtPassword,config[_env].password)
 
+        await utils.sleep(1000)
         // Enter Login button
         if(_env == 'cf_prod'){
             await utils.clickEl(MemberSiteLocator.btnLoginPro)

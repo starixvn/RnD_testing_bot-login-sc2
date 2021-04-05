@@ -23,6 +23,8 @@ export const login = async(_env,_game) => {
         } else {
             await utils.clickEl(MemberSiteLocator.btnLogin)
         }
+        await utils.sleep(1000)
+        await utils.navigate(config.cf_prod.gamelobbyurl)
         await utils.waitEl(MemberSiteLocator.frmMainFrame)
         await utils.navigate(await utils.getAttribute(MemberSiteLocator.frmMainFrame,'src'))
     } catch (error) {
@@ -41,7 +43,8 @@ export const login = async(_env,_game) => {
         } else {
             await utils.clickEl(MemberSiteLocator.btnLogin)
         }
-
+        await utils.sleep(1000)
+        await utils.navigate(config.cf_prod.gamelobbyurl)
         await utils.navigate(await utils.getAttribute(MemberSiteLocator.frmMainFrame,'src'))
     }
 }

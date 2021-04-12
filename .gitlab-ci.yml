@@ -17,6 +17,9 @@ login-test:
    - echo "$CI_JOB_ID"
    - set NODE_ENV=cf_prod
    - npm run test
+   - endt=$(date -d $CI_COMMIT_TIMESTAMP +%s)
+   - startt=$(date -d $CI_PIPELINE_CREATED_AT +%s)
+   - $((endt-startt))
   artifacts:
     paths:
       - Report/

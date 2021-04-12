@@ -48,7 +48,7 @@ after-test-f:
   tags:
   - docker-automation-test
   script:
-    - curl --data-urlencode "message=**CI Job 「Check Login SC2」..:rocket:**{{NewLine}}**:no_entry:FAILED:no_entry:** - [Evidence](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/jobs/$JOBR/artifacts/file/Report/Pictures/Verify%20SSO%20succesfully%20on%20PRO.png){{NewLine}}Refer [here](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/pipelines/$CI_PIPELINE_ID) for more detail{{NewLine}}Duration time *:* ${ExeTime}{{NewLine}}________________" -d conversationId=-1001353358025 -d token=0A40aOc7CtpzjbBSJu8KNWQRoXyjRvf9  https://bot.nexdev.net/skynex/api/messages/forwardwithtoken
+    - curl --data-urlencode "message=**CI Job 「Check Login SC2」..:rocket:**{{NewLine}}**:no_entry:FAILED:no_entry:** - [Evidence](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/jobs/$JOBR/artifacts/file/Report/Pictures/Verify%20SSO%20succesfully%20on%20PRO.png){{NewLine}}Refer [here](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/pipelines/$CI_PIPELINE_ID) for more detail{{NewLine}}Duration time - ${ExeTime}{{NewLine}}________________" -d conversationId=-1001353358025 -d token=0A40aOc7CtpzjbBSJu8KNWQRoXyjRvf9  https://bot.nexdev.net/skynex/api/messages/forwardwithtoken
   when: on_failure
 
 cleanup_job:

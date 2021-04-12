@@ -20,7 +20,6 @@ login-test:
    - endt=$(date -d "$CI_COMMIT_TIMESTAMP" '+%s')
    - startt=$(date -d "$CI_PIPELINE_CREATED_AT" '+%s')
    - echo "$((endt-startt))"
-   - $((endt-startt))
   artifacts:
     paths:
       - Report/

@@ -18,7 +18,6 @@ login-test:
    - echo "StartTime=$startt" >>build.env
    - set NODE_ENV=cf_prod
    - npm run test
-   - exit 1
   artifacts:
     paths:
       - Report/

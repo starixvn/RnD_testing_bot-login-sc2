@@ -17,8 +17,8 @@ login-test:
    - echo "$CI_JOB_ID"
    - set NODE_ENV=cf_prod
    - npm run test
-   - endt=$(date -d $CI_COMMIT_TIMESTAMP +%s)
-   - startt=$(date -d $CI_PIPELINE_CREATED_AT +%s)
+   - endt=$(date -d $CI_COMMIT_TIMESTAMP '+%s')
+   - startt=$(date -d $CI_PIPELINE_CREATED_AT '+%s')
    - $((endt-startt))
   artifacts:
     paths:
@@ -48,8 +48,8 @@ after-test-f:
   tags:
   - docker-automation-test
   script:
-    - endt=$(date -d $CI_COMMIT_TIMESTAMP +%s)
-    - startt=$(date -d $CI_PIPELINE_CREATED_AT +%s)
+    - endt=$(date -d $CI_COMMIT_TIMESTAMP '+%s')
+    - startt=$(date -d $CI_PIPELINE_CREATED_AT '+%s')
     - $((endt-startt))
     - curl --data-urlencode "message=**CI Job 「Check Login SC2」..:rocket:**{{NewLine}}**:no_entry:FAILED:no_entry:** - [Evidence](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/jobs/$JOBR/artifacts/file/Report/Pictures/Verify%20SSO%20succesfully%20on%20PRO.png){{NewLine}}Refer [here](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/pipelines/$CI_PIPELINE_ID) for more detail{{NewLine}}________________" -d conversationId=-1001353358025 -d token=0A40aOc7CtpzjbBSJu8KNWQRoXyjRvf9  https://bot.nexdev.net/skynex/api/messages/forwardwithtoken
   when: on_failure

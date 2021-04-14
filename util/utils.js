@@ -2,6 +2,7 @@ import * as config from './../config/config'
 import pixelmatch from 'pixelmatch'
 import * as MemberSiteFunc from '../Games/MemberSite_Function'
 import * as GameLobbyFunc from '../Games/GameLobby_Funcion'
+import * as gsUtil from './gsutils'
 const fs = require('fs')
 const { createWorker } = require('tesseract.js')
 const path = require('path')
@@ -474,62 +475,42 @@ export const Login = async(_env,_game) => {
     starttime = Date.now()
     flag = await GameLobbyFunc.verifyLoginSuccessfully()
     endtime = Date.now()
+    let t = Math.round((endtime - starttime)/1000)
     console.log('Duration to SSO : (' + (endtime - starttime) +'ms)')
+    const args = await parseArg(process.argv[7])
+    let runtime = new Date().toLocaleDateString()  + "   " + new Date().toLocaleTimeString()
+
+    
+    // Log info
+    let gsheet = new gsUtil.Doc('1ysx_va_Qy8I8yx9c9XTRIFjOXjZ6AqKNmkcnmP8LMqg')
+    await gsheet.init()
+    await gsheet.getSheet('Log')
+    await gsheet.insert({"Product":"SC2","Runtime (UTC+0)": runtime,"Duration": endtime-starttime,"Status" : t > 30 ? "Failed" : "Passed"})
+
+    // Send Telegram if Failed
+    if(t >= 90){
+        chai.request("https://api.telegram.org")
+        .post("/bot1710698751:AAFaBfulGZHsEXdkACx-BbDwn75nJ2i1MfY/sendMessage")
+        .send({
+            chat_id: -507838201,
+            parse_mode: "markdown",
+            text: `*CI Job 「Check Login SC2」*..🚀\n🚫*FAILED*🚫 - [Picture](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/jobs/${args.Job}/artifacts/file/Report/Pictures/Verify%20SSO%20succesfully%20on%20PRO.png)\nRefer [log](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/jobs/${args.Job})\nDuration time - ${t} seconds\n____________________`
+        }).end( async(err,res)=>{
+           expect(res).to.have.status(200)
+        })
+    }
 
     // console.log(flag)
     expect(flag.Val,"Fail on Login GameLobby").to.be.true
 }
 
-const isNumber = async(n) => { return /([0-9]*,?)*(\.[0-9]*)?/.test(n) }
-export const getUIBalance = async(_path,_left=null, _top=null, _width=null, _height=null) => {
-    try {
-        if(typeof _path === 'object') {
-            _left = _path.left
-            _top = _path.top
-            _width = _path.width
-            _height = _path.height
-            _path = _path.ImageCompare
-        } else if(isNaN(_left) === false){}
-        else {
-            _top = _x.top
-            _width = _x.width
-            _height = _x.height
-            _left = _x.left
-        }
-        await CaptureSubImageToFile(_path,_left, _top, _width, _height)
-        await sleep(1000)
-        let _txtNum = await parseNumber(await getTextFromImage(_path))
-        // console.log(_txtNum)
-        for(let t = 1; t<= config.setting.loop/4; t++){
-            if(isNaN(_txtNum) !== true) {
-                fs.unlinkSync(_path)
-                fs.unlinkSync(_path+"_1")
-                return _txtNum
-            }
-            fs.unlinkSync(_path)
-            fs.unlinkSync(_path+"_1")
-            await CaptureSubImageToFile(_path,_left, _top, _width, _height)
-            await sleep(1000)
-            _txtNum = await parseNumber(await getTextFromImage(_path))
-            // console.log(_txtNum)
-        }
-        return null
-    } catch (error) {
-        console.log(error.message)
-        return null
+
+export const parseArg = async(_args)=> {
+    let p = _args.split("-")
+    let args ={},tmp=[]
+    for(let i=0 ; i< p.length ; i++){
+        tmp = p[i].split("=")
+        args[tmp[0]] = tmp[1]
     }
-}
-export const setBalance = async(_custid,_balance=20000) => {
-    // await page.route("")
-    // await fetch("http://owapi-simulator.lumigame.com/SabaClub/CreateCustomer", {
-    //     method: 'post',
-    //     body: 'ObCustId='+custid+'&Balance='+balance,
-    //     headers: {
-    //         'Content-Type': 'application/x-www-form-urlencoded',
-    //         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    //         'Accept-Language': 'vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5',
-    //         'Accept-Encoding': 'gzip, deflate'
-    //     }
-    // }).then((response) => console.log(response))
-    // .catch((error) => console.log(error));
+    return args
 }

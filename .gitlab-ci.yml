@@ -1,5 +1,5 @@
 image: 
-  name: git3.nexdev.net:5050/rnd/testing/bot-login-sc2
+  name: git3.nexdev.net:5050/rnd/testing/mocha-playwright
 
 stages: 
   - test
@@ -13,44 +13,13 @@ login-test:
    - docker-automation-test
   script:
    - npm install
-   - echo "JOBR=$CI_JOB_ID" >> build.env
-   - startt=$(date +%s)
-   - echo "StartTime=$startt" >>build.env
    - set NODE_ENV=cf_prod
-   - npm run test
+   - npm run test --args=Job=$CI_JOB_ID
   artifacts:
     paths:
-      - Report/
-      - build.env
+      - Report/Pictures/
     when: always
     expire_in: 1 day 
-
-config-after-tests:
-  stage: config.after.test
-  tags:
-  - docker-automation-test
-  script: 
-    - exit 1
-  when: on_failure  
-  artifacts:
-    reports:
-      dotenv: 
-        - build.env
-    when: always
-    expire_in: 1 day
-
-
-    
-after-test-f:
-  stage: after-test
-  tags:
-  - docker-automation-test
-  script:
-    - endt=$(date +%s)
-    - startt=$StartTime
-    - exet="$((endt-startt))"
-    - curl --data-urlencode "message=**CI Job 「Check Login SC2」..:rocket:**{{NewLine}}**:no_entry:FAILED:no_entry:** - [Picture](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/jobs/$JOBR/artifacts/file/Report/Pictures/Verify%20SSO%20succesfully%20on%20PRO.png){{NewLine}}Refer [log](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/pipelines/$CI_PIPELINE_ID){{NewLine}}Duration time - **${exet}** seconds{{NewLine}}________________" -d conversationId=-1001353358025 -d token=0A40aOc7CtpzjbBSJu8KNWQRoXyjRvf9  https://bot.nexdev.net/skynex/api/messages/forwardwithtoken
-  when: on_failure
 
 cleanup_job:
   stage: cleanup

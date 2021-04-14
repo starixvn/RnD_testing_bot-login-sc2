@@ -20,10 +20,13 @@
         "ocrad.js": "0.0.1",
         "pixelmatch": "5.2.1",
         "playwright": "^1.8.0",
-        "tesseract.js": "^2.1.4"
+        "tesseract.js": "^2.1.4",
+        "google-spreadsheet": "3.1.15",
+        "chai-http": "4.3.0",
+        "jsonpath": "1.1.1"
     },
     "scripts": {
-        "test": "mocha  --timeout 0 Games/GameLobby_Test.js -r @babel/register --file ./Setup.js --file ./Teardown.js  --reporter mochawesome --reporter-options reportDir=Report ",
+        "test": "mocha  --timeout 0 Games/GameLobby_Test.js -r @babel/register $npm_config_args --file ./Setup.js --file ./Teardown.js  --reporter mochawesome --reporter-options reportDir=Report ",
         "smoke": "mocha --timeout 60000 Games/**/*_Test.js  -r @babel/register  --fgrep Smoke_ --file ./Setup.js  --file ./Teardown.js  --reporter mochawesome --reporter-options reportDir=Report "
     },
     "dependencies": {}

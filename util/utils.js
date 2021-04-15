@@ -7,6 +7,9 @@ const fs = require('fs')
 const { createWorker } = require('tesseract.js')
 const path = require('path')
 const PNG = require('pngjs').PNG
+const chai = require('chai')
+const chaiHTTP = require('chai-http')
+chai.use(chaiHTTP)
 
 
 // Verify Message is existed

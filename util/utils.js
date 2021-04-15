@@ -481,11 +481,6 @@ export const Login = async(_env,_game) => {
     let runtime = new Date().toLocaleDateString()  + "   " + new Date().toLocaleTimeString()
 
     
-    // Log info
-    let gsheet = new gsUtil.Doc('1ysx_va_Qy8I8yx9c9XTRIFjOXjZ6AqKNmkcnmP8LMqg')
-    await gsheet.init()
-    await gsheet.getSheet('Log')
-    await gsheet.insert({"Product":"SC2","Runtime (UTC+0)": runtime,"Duration": endtime-starttime,"Status" : t > 30 ? "Failed" : "Passed"})
 
     // Send Telegram if Failed
     if(t >= 90){
@@ -500,6 +495,11 @@ export const Login = async(_env,_game) => {
         })
     }
 
+    // Log info
+    let gsheet = new gsUtil.Doc('1ysx_va_Qy8I8yx9c9XTRIFjOXjZ6AqKNmkcnmP8LMqg')
+    await gsheet.init()
+    await gsheet.getSheet('Log')
+    await gsheet.insert({"Product":"SC2","Runtime (UTC+0)": runtime,"Duration": endtime-starttime,"Status" : t > 30 ? "Failed" : "Passed"})
     // console.log(flag)
     expect(flag.Val,"Fail on Login GameLobby").to.be.true
 }

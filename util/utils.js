@@ -132,6 +132,15 @@ export const waitForLoadState = async() => {
          // this.screenFail()
      }
 }
+// Wait For Navigation
+export const waitForNavigation = async() => {
+    try{
+        await  page.waitForNavigation( {timeout : config.setting.timeout} )
+    } catch (error) {
+        console.error(error.message);
+        // this.screenFail()
+    }
+}
 // Wait Element 
 export const waitEl = async(_el) => {
     try {

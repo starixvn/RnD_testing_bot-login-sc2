@@ -23,7 +23,7 @@ export const login = async(_env,_game) => {
         } else {
             await utils.clickEl(MemberSiteLocator.btnLogin)
         }
-        await utils.waitForNavigation()
+        await utils.waitEl(MemberSiteLocator.divMainPage)
         await utils.navigate(config.cf_prod.gamelobbyurl)
         await utils.waitEl(MemberSiteLocator.frmMainFrame)
         console.log(await utils.getAttribute(MemberSiteLocator.frmMainFrame,'src'))

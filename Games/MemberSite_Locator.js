@@ -8,7 +8,7 @@ export const MemberSiteLocator = {
     optQuickLink : "//select[@id='act_sel']",
     optQuickLinkSabaClub : "*SabaClub",
     title : "Athena Demo Site",
-
+    divMainPage : "//div[contains(@id,'athena')]",
     // Frame Lobby 
     frmMainFrame : "//iframe[@id='frmGame']",
 

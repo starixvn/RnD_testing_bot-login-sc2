@@ -20,7 +20,7 @@ before(async () => {
           dir: './Report/Videos/',
         },
         recordHar : {
-          path: './Report/LogPage.har'
+          path: './Report/LogPage'
         }
     });
     const page = await context.newPage();

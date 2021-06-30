@@ -498,7 +498,7 @@ export const Login = async(_env,_game) => {
     for(let i = 0 ; i< wsMessageReceived.length ; i++){
         ws= ws + wsMessageReceived[i] + "\n"
     }
-    fs.writeFile('./Report/Log.txt',ws, function (err) {
+    fs.writeFileSync('./Report/Log.txt',ws, function (err) {
         if (err) console.log(err)
         });    
 

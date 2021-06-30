@@ -15,6 +15,7 @@ describe('GameLobby', ()=>{
       await page.screenshot({ path: `./Report/Pictures/${__filename}.png`});
       await addContext (this,`./Pictures/${__filename}.png` )
     }
+    // await context.close()
   })
   it('Verify SSO succesfully on PRO', async()=>{
       await utils.Login(env,game);

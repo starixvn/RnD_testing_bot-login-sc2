@@ -18,6 +18,9 @@ before(async () => {
         },
         recordVideo: {
           dir: './Report/Videos/',
+        },
+        recordHar : {
+          path: './Report/LogPage.har'
         }
     });
     const page = await context.newPage();

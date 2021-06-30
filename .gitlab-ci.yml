@@ -19,6 +19,7 @@ login-test:
     paths:
       - Report/Pictures/
       - Report/Videos/
+      - Report/Log.txt
     when: always
     expire_in: 1 day 
 

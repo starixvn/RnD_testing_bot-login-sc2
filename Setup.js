@@ -1,5 +1,6 @@
 import playwright from 'playwright'
 import * as config from './config/config'
+const fs = require('fs')
 
 const chai = require('chai')
 const expect = chai.expect
@@ -26,5 +27,6 @@ before(async () => {
     global.balance = parseFloat("0.00")
     global.env = process.env.NODE_ENV || 'cf_prod'
     global.expect = expect
+    global.fs = fs
 })
 

@@ -449,7 +449,8 @@ export const wshear = async(ws) =>{
         ws.on('framereceived', async msg => {
             if(isHear ===true) {
                 wsMessageReceived.push(msg.payload)
-            } else { wsMessageReceived = [] }
+            } 
+            // else { wsMessageReceived = [] }
         });
     }
 }
@@ -492,7 +493,14 @@ export const Login = async(_env,_game) => {
     const args = await parseArg(process.argv[7])
     let runtime = new Date().toLocaleDateString()  + "   " + new Date().toLocaleTimeString()
 
-    
+    // log ws
+    let ws =""
+    for(let i = 0 ; i< wsMessageReceived.length ; i++){
+        ws= ws + wsMessageReceived[i] + "\n"
+    }
+    fs.writeFile('./Report/Log.txt',ws, function (err) {
+        if (err) console.log(err)
+        });    
 
     // Send Telegram if Failed
     if(t >= 90){

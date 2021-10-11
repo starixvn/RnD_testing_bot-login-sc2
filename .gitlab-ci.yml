@@ -1,5 +1,5 @@
 image: 
-  name: git3.nexdev.net:5050/rnd/testing/mocha-playwright
+  name: git3.nexdev.net:5050/rnd/testing/qc-auto-image
 
 stages: 
   - test
@@ -15,13 +15,14 @@ login-test:
    - npm install
    - set NODE_ENV=cf_prod
    - npm run test --args=Job=$CI_JOB_ID
+  timeout: 7m
   artifacts:
     paths:
       - Report/Pictures/
       - Report/Videos/
       - Report/LogPage
       - Report/Log.txt
-    when: always
+    when: on_failure
     expire_in: 1 day 
 
 cleanup_job:

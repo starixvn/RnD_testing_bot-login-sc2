@@ -8,7 +8,15 @@ export const MemberSiteLocator = {
     optQuickLink : "//select[@id='act_sel']",
     optQuickLinkSabaClub : "*SabaClub",
     title : "Athena Demo Site",
+
     divMainPage : "//div[contains(@id,'athena')]",
+
+    
+    // Change Language
+    drpLanguage : "select#SelLang",
+    optLanguage : "vn",
+    verifyLanguage : "//input[@value='TRUY CẬP']",
+
     // Frame Lobby 
     frmMainFrame : "//iframe[@id='frmGame']",
 

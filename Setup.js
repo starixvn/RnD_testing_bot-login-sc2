@@ -15,12 +15,6 @@ before(async () => {
         viewport: {
           width: config.setting.viewport.width,
           height: config.setting.viewport.height
-        },
-        recordVideo: {
-          dir: './Report/Videos/',
-        },
-        recordHar : {
-          path: './Report/LogPage'
         }
     });
     const page = await context.newPage();
@@ -30,6 +24,12 @@ before(async () => {
     global.balance = parseFloat("0.00")
     global.env = process.env.NODE_ENV || 'cf_prod'
     global.expect = expect
+    global.chai = chai
     global.fs = fs
+    global.t = 0
+    global.msg = ""
+    global.ws = ""
+    global.flagLogMemberSite = true
+    global.attempt = 1
 })
 

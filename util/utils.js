@@ -239,7 +239,7 @@ export const selectDrp = async(_el, _val) => {
 
 // Clear Log Message
 export const clearLog = async() =>{
-    wsFindMessage = []
+    wsMessageReceived = []
 }
 
 // ScreenShot
@@ -471,57 +471,84 @@ export const wsHearMessageOff = async() => {
 export const shouldBeEqual = async(_val,_expect,_mess="") => {
     global.expect(_val,_mess).to.equal(_expect) 
 }
-
-
+export const notify = async(_status)=>{
+    const args = await parseArg(process.argv[7])
+    // let runtime = new Date().toLocaleDateString()  + "   " + new Date().toLocaleTimeString()
+    // Send Telegram if Failed
+    if(_status === false){
+        let res = await chai.request("https://bot.nexdev.net")
+        .post("/skynex/api/messages/forwardwithtoken").set('content-type', 'application/x-www-form-urlencoded')
+        .send({
+            token: "0A40aOc7CtpzjbBSJu8KNWQRoXyjRvf9",
+            conversationId: -1001373563170,
+            message: `*「Check Login SC2」*..:rocket:{{NewLine}}:no_entry_sign:*FAILED ${msg}*:no_entry_sign: - [Picture](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/jobs/${args.Job}/artifacts/file/Report/Pictures/Verify%20SSO%20succesfully%20on%20PRO.png){{NewLine}}Refer [log](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/jobs/${args.Job}){{NewLine}}Duration time over ${t} seconds{{NewLine}}____________________`
+        })
+        await shouldBeEqual(res.statusCode,200)
+    }
+}
+// Wait Page Load
+export const ReturnFlag = async() => {
+    try {
+        for(let t =0 ; t < config.setting.loop ; t++){
+            if(page.url().toString().includes('lang=vn') === true) {
+                return true
+            }
+            await sleep(200)
+        }     
+        return false
+     } catch (error) {
+         // this.screenFail()
+         return false
+     }
+}
+export const checkNetwork = async() => {
+    let res = await chai.request("http://www.athena-demo-online.com").get("/onelogin.aspx?id=supper").send()
+    return (res.statusCode === 200) ? true : false
+}
+export const logOut = async()=> {
+    await context.clearCookies()
+}
 // Login
 export const Login = async(_env,_game) => {
     let flag
     let starttime,endtime
-    if(_env != 'cf_local') {
-        // Login Member Site
-        await MemberSiteFunc.login(_env,_game)
-    } else {
-        // Navigate Sabaclub from Simulator
-        await MemberSiteFunc.login_local(_env,_game)
+    // Login Member Site
+    await MemberSiteFunc.login(_env,_game)
+    await waitForLoadState()
+    flagLogMemberSite = await ReturnFlag()
+    if(flagLogMemberSite === false){
+        if(attempt === 1){
+            attempt = 2
+            return false
+        } else {
+            msg = "Login Member Site" 
+            await notify(false)
+            await shouldBeEqual(true,false,"Failed on Login Member Site")
+            return false
+        }
     }
+    await navigate(config[_env].gamelobbyurl)
+    // await waitEl(MemberSiteLocator.frmMainFrame)
+    // await navigate(await getAttribute(MemberSiteLocator.frmMainFrame,'src'))
     // Verify go to Game Lobby Successfully
     starttime = Date.now()
     flag = await GameLobbyFunc.verifyLoginSuccessfully()
     endtime = Date.now()
-    let t = Math.round((endtime - starttime)/1000)
+    t = Math.round((endtime - starttime)/1000)
     console.log('Duration to SSO : (' + (endtime - starttime) +'ms)')
-    const args = await parseArg(process.argv[7])
-    let runtime = new Date().toLocaleDateString()  + "   " + new Date().toLocaleTimeString()
 
-    // log ws
-    let ws =""
-    for(let i = 0 ; i< wsMessageReceived.length ; i++){
-        ws= ws + wsMessageReceived[i] + "\n"
+    if(flag.Val === false){
+        if(attempt === 1){
+            attempt = 2
+            return false
+        } else {
+            msg = `SSO = account ${config.cf_prod.username.Gamelobby2}`
+            await notify(false)
+            await shouldBeEqual(true,false,"Fail on SSO = account ${}")
+            return false
+        }
     }
-    fs.writeFileSync('./Report/Log.txt',ws, function (err) {
-        if (err) console.log(err)
-        });    
-
-    // Send Telegram if Failed
-    if(t >= 90){
-        chai.request("https://api.telegram.org")
-        .post("/bot1710698751:AAFaBfulGZHsEXdkACx-BbDwn75nJ2i1MfY/sendMessage")
-        .send({
-            chat_id: -1001353358025,
-            parse_mode: "markdown",
-            text: `*CI Job 「Check Login SC2」*..🚀\n🚫*FAILED*🚫 - [Picture](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/jobs/${args.Job}/artifacts/file/Report/Pictures/Verify%20SSO%20succesfully%20on%20PRO.png)\nRefer [log](https://git3.nexdev.net/RnD/testing/bot-login-sc2/-/jobs/${args.Job})\nDuration time over ${t} seconds\n____________________`
-        }).end( async(err,res)=>{
-           expect(res).to.have.status(200)
-        })
-    }
-
-    // Log info
-    let gsheet = new gsUtil.Doc('1ysx_va_Qy8I8yx9c9XTRIFjOXjZ6AqKNmkcnmP8LMqg')
-    await gsheet.init()
-    await gsheet.getSheet('Log')
-    await gsheet.insert({"Product":"SC2","Runtime (UTC+0)": runtime,"Duration": endtime-starttime,"Status" : t > 30 ? "Failed" : "Passed"})
-    // console.log(flag)
-    expect(flag.Val,"Fail on Login GameLobby").to.be.true
+    return true
 }
 
 

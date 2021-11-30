@@ -1,5 +1,5 @@
 image: 
-  name: git3.nexdev.net:5050/rnd/testing/qc-auto-image
+  name: git3.nexdev.net:5050/rnd/testing/qc-auto-image:master
 
 stages: 
   - test

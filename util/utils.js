@@ -529,11 +529,8 @@ export const Login = async(_env,_game) => {
     }
     await navigate(config[_env].gamelobbyurl)
     //select group currency
-    await selectDrp('xpath=//*/select[@id="group"]','61cbfc0baae6220001d073e9')
-    await clickEl('xpath=//input[@value="Submit"]')
-    await sleep(9000)
-    // await waitEl(MemberSiteLocator.frmMainFrame)
-    // await navigate(await getAttribute(MemberSiteLocator.frmMainFrame,'src'))
+    await waitForLoadState()
+    await page.frame({url: /.*v-gaming.net.*/}).click('text=Submit');
     // Verify go to Game Lobby Successfully
     starttime = Date.now()
     flag = await GameLobbyFunc.verifyLoginSuccessfully()

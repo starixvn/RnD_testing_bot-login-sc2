@@ -20,9 +20,7 @@ export const login = async(_env,_game) => {
 
         // Input Username and Password
         await utils.sendKeys(MemberSiteLocator.txtUsername,config[_env].username[_game])
-        await utils.sendKeys(MemberSiteLocator.txtPassword,config[_env].password)
-        
-
+        //await utils.sendKeys(MemberSiteLocator.txtPassword,config[_env].password)
         await utils.sleep(1000)
 
         // Enter Login button

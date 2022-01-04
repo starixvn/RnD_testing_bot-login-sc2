@@ -528,10 +528,6 @@ export const Login = async(_env,_game) => {
         }
     }
     await navigate(config[_env].gamelobbyurl)
-    //select group currency
-    await selectDrp('xpath=//*/select[@id="group"]','61b048d27e6d8f000145357f')
-    await clickEl('xpath=//input[@value="Submit"]')
-    await sleep(9000)
     // await waitEl(MemberSiteLocator.frmMainFrame)
     // await navigate(await getAttribute(MemberSiteLocator.frmMainFrame,'src'))
     // Verify go to Game Lobby Successfully

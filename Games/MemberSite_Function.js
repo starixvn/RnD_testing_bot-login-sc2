@@ -10,25 +10,37 @@ export const login = async(_env,_game) => {
         // Go to Membersite Url
         await utils.navigate(config[_env].url)
         await utils.waitForLoadState()
-        
+        await utils.sleep(10000)
         // Change Language
-        await utils.selectDrp(MemberSiteLocator.drpLanguage,MemberSiteLocator.optLanguage)
-        await utils.waitForLoadState()
-        // await utils.navigate(config[_env].url)
+        // await utils.selectDrp(MemberSiteLocator.drpLanguage,MemberSiteLocator.optLanguage)
         // await utils.waitForLoadState()
-        
+        // // await utils.navigate(config[_env].url)
+        // // await utils.waitForLoadState()
+        await utils.CaptureSubImageToFile('secode.png',1113,16,37,15)
+        let secode = await utils.getNumberFromImage('secode.png')
+        if(secode.length <4){
+            console.log('re secode')
+            await page.reload()
+            // await utils.sleep(5000)
+            await utils.CaptureSubImageToFile('secode.png',1113,16,37,15)
+            await utils.sleep(200)
+            secode = await utils.getNumberFromImage('secode.png')
+            }
+        console.log(parseInt(secode));
+
 
         // Input Username and Password
-        await utils.sendKeys(MemberSiteLocator.txtUsername,config[_env].username[_game])
-        //await utils.sendKeys(MemberSiteLocator.txtPassword,config[_env].password)
+        await utils.sendKeys('id=username',config.cf_prod.username[_game])
+        await utils.sendKeys('id=password',config.cf_prod.password)
+        await utils.sendKeys('id=validation',secode.trim())    
+        await utils.clickEl("xpath=//*[text()='Đăng nhập']")
         await utils.sleep(1000)
-
-        // Enter Login button
-        if(_env == 'cf_prod'){
-            await utils.clickEl(MemberSiteLocator.btnLoginPro)
-        } else {
-            await utils.clickEl(MemberSiteLocator.btnLogin)
-        }
+        // // Enter Login button
+        // if(_env == 'cf_prod'){
+        //     await utils.clickEl("xpath=//*[text()='Đăng nhập']")
+        // } else {
+        //     await utils.clickEl(MemberSiteLocator.btnLogin)
+        // }
         
     } catch (error) {
         console.error(error.message);

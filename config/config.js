@@ -42,13 +42,13 @@ export const cf_uat ={
 
 
 export const cf_prod ={
-    url: "http://www.athena-demo-online.com/onelogin.aspx?id=supper",
+    url: "http://www.athena-demo-online.com/NewIndex?lang=vn&webskintype=3",
     username: {
         Gamelobby1 : "VNtest043",
         Gamelobby2 : "VNtest042"
     },
     password: "1q2w3e4r",
-    gamelobbyurl: "http://member.athena-demo-online.com/GamePage.aspx?Game=VGaming&refer=",
+    gamelobbyurl: "http://member.athena-demo-online.com/GamePage.aspx?Game=VGaming&timeZone=7&gameId=0",
     urlWebsocket: "wss://proxy.v-gaming.net/roulette/socket.io/?EIO=3&transport=websocket",
     urlOrigin: "https://www.v-gaming.net",
     protocol: "wss"

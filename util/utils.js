@@ -363,12 +363,16 @@ export const imageShouldNotDisplay = async(_subimage, _x=null, _y=null, _w=null,
 }
 
 // parse text from image
-export const getTextFromImage = async(_path) => {
+export const getNumberFromImage = async(_path) => {
     try {
         const worker = createWorker()
         await worker.load();
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
+        await worker.setParameters({
+            tessedit_char_whitelist: '0123456789',
+            preserve_interword_spaces: '0',
+          });
         const { data: { text } } = await worker.recognize(_path);
         // console.log(text)
         await worker.terminate();
@@ -490,7 +494,7 @@ export const notify = async(_status)=>{
 export const ReturnFlag = async() => {
     try {
         for(let t =0 ; t < config.setting.loop ; t++){
-            if(page.url().toString().includes('lang=vn') === true) {
+            if(page.url().toString().includes('lang') === true) {
                 return true
             }
             await sleep(200)
@@ -516,6 +520,7 @@ export const Login = async(_env,_game) => {
     await MemberSiteFunc.login(_env,_game)
     await waitForLoadState()
     flagLogMemberSite = await ReturnFlag()
+    //submit currency
     if(flagLogMemberSite === false){
         if(attempt === 1){
             attempt = 2
@@ -527,10 +532,12 @@ export const Login = async(_env,_game) => {
             return false
         }
     }
-    await navigate(config[_env].gamelobbyurl)
+    await navigate(config.cf_prod.gamelobbyurl)
     //select group currency
+    // await clickEl('xpath=//input[@value="Submit"]')
     await waitForLoadState()
     await page.frame({url: /.*v-gaming.net.*/}).click('text=Submit');
+    // await page.frame({url: /.*vgaming88.net*/}).click('text=Submit');
     // Verify go to Game Lobby Successfully
     starttime = Date.now()
     flag = await GameLobbyFunc.verifyLoginSuccessfully()

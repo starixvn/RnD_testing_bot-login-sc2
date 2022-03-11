@@ -18,7 +18,7 @@
         "mochawesome": "6.2.2",
         "ocrad.js": "0.0.1",
         "pixelmatch": "5.2.1",
-        "playwright": "1.16.3",
+        "playwright": "1.19.2",
         "tesseract.js": "2.1.4",
         "google-spreadsheet": "3.1.15",
         "chai-http": "4.3.0",

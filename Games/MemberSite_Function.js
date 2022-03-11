@@ -34,7 +34,7 @@ export const login = async(_env,_game) => {
         await utils.sendKeys('id=password',config.cf_prod.password)
         await utils.sendKeys('id=validation',secode.trim())    
         await utils.clickEl("xpath=//*[text()='Đăng nhập']")
-        await utils.sleep(1000)
+        await utils.sleep(5000)
         // // Enter Login button
         // if(_env == 'cf_prod'){
         //     await utils.clickEl("xpath=//*[text()='Đăng nhập']")
